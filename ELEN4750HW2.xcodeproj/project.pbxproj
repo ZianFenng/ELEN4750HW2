@@ -9,12 +9,16 @@
 /* Begin PBXFileReference section */
 		3A6FCD231DAF4F0B0055B8B9 /* Part1CUDA.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = Part1CUDA.py; sourceTree = "<group>"; };
 		3A6FCD241DAFDEBF0055B8B9 /* part1PyOpenCL.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = part1PyOpenCL.py; sourceTree = "<group>"; };
+		3A6FCD251DB3D33C0055B8B9 /* part2PyOpenCL.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = part2PyOpenCL.py; sourceTree = "<group>"; };
+		3A6FCD261DB3D34A0055B8B9 /* part2CUDA.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = part2CUDA.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		3A6FCD1C1DAF4DF80055B8B9 = {
 			isa = PBXGroup;
 			children = (
+				3A6FCD261DB3D34A0055B8B9 /* part2CUDA.py */,
+				3A6FCD251DB3D33C0055B8B9 /* part2PyOpenCL.py */,
 				3A6FCD241DAFDEBF0055B8B9 /* part1PyOpenCL.py */,
 				3A6FCD231DAF4F0B0055B8B9 /* Part1CUDA.py */,
 			);
