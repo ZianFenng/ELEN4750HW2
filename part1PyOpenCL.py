@@ -43,6 +43,11 @@ prg = cl.Program(ctx, kernel).build()
 # Define the size of the loop
 loop_size = 100
 
+ex_size = 5
+
+cpu_times = np.zeros(loop_size).astype(np.float64)
+gpu_times = np.zeros(loop_size).astype(np.float64)
+
 for n in range(1, loop_size):
     # Generate random origin nxn matrix
     A = np.random.rand(n,n).astype(np.float32)
@@ -51,8 +56,21 @@ for n in range(1, loop_size):
     AT_gpu = cl.array.empty(queue, A.shape, A.dtype)
     
     # Call the kernel here, all data in global memory
-    prg.func(queue, A.shape, None, np.uint32(n), A_gpu.data, AT_gpu.data)
-    
+    gpu_t = []
+    for M in xrange(ex_size):
+        start_g = time.time()
+        prg.func(queue, A.shape, None, np.uint32(n), A_gpu.data, AT_gpu.data)
+        finish_g = time.time()
+        gpu_t.append(finish_g - start_g)
+    gpu_times[n] = np.average(gpu_t)
+
+    cpu_t = []
+    for M in xrange(ex_size):
+        start_c = time.time()
+        AT_cpu = np.matrix.transpose(A)
+        finish_c = time.time()
+        cpu_t.append(finish_c - start_c)
+    cpu_times[n] = np.average(cpu_t)
     # Get the transposed matrix from GPU
     AT = AT_gpu.get()
     
@@ -67,3 +85,23 @@ for n in range(1, loop_size):
         print '\n AT equals to A, A is symmetric \n'
     else:
         print '\n AT doesn\'t equal to A, A is not symmetric \n'
+
+# Here we draw the figure comparing the CPU and GPU execution time
+import matplotlib as mpl
+mpl.use('agg')
+import matplotlib.pyplot as plt
+
+plt.gcf()
+
+plt.plot(range(0,loop_size), cpu_times, 'y')
+plt.plot(range(0,loop_size), gpu_times, 'r')
+
+plt.legend(['CPU Algorithm','GPU Algorithm'], loc='upper left')
+
+plt.xlabel('Matrix size')
+
+plt.ylabel('Time')
+
+plt.gca().set_xlim(0, loop_size)
+
+plt.savefig('TransposeOpenCL.png')
